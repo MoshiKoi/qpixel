@@ -3,7 +3,8 @@
   "description": "Rails-based Q&A engine",
   "private": true,
   "scripts": {
-    "typecheck": "tsc"
+    "typecheck": "tsc",
+    "build": "webpack --config webpack.config.js"
   },
   "devDependencies": {
     "@types/jquery": "^3.5.32",
@@ -12,6 +13,8 @@
     "dompurify": "3.4.13",
     "moment": "2.13.0",
     "prettier-plugin-brace-style": "0.8.1",
-    "typescript": "5.6.3"
+    "typescript": "5.6.3",
+    "webpack": "5.109.2",
+    "webpack-cli": "7.2.2"
   }
 }

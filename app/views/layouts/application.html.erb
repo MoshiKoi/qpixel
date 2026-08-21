@@ -2,6 +2,7 @@
 <html lang="en" dir="ltr">
   <head>
     <%= render 'layouts/head' %>
+    <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
   </head>
   <body class="<%= Rails.env.development? ? 'development' : '' %>"
         data-user-id="<%= user_signed_in? ? current_user.id : 'none' %>"
