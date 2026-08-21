@@ -7,6 +7,23 @@ module.exports = {
   entry: {
     application: "./app/javascript/application.js"
   },
+  module: {
+    rules: [
+      {
+        test: /\.tsx?$/,
+        use: ["ts-loader", "glob-import-loader"],
+        exclude: /node_modules/,
+      },
+      {
+        test: /\.jsx?$/,
+        use: "glob-import-loader",
+        exclude: /node_modules/,
+      }
+    ],
+  },
+  resolve: {
+    extensions: [".tsx", ".ts", ".js"],
+  },
   output: {
     filename: "[name].js",
     sourceMapFilename: "[file].map",
