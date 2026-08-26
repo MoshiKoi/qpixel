@@ -40,5 +40,8 @@ export default webpack.defineConfig({
       maxChunks: 1
     })
   ],
-  externals: ["jquery", "moment", "select2"]
+  externals: ["jquery", "moment"],
+  watchOptions: {
+    poll: 1000,
+  }
 });

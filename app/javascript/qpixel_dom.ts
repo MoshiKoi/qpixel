@@ -1,5 +1,4 @@
 import QPixel from './qpixel_api';
-import JQuery from 'jquery';
 import moment from 'moment';
 
 type ClassWatcherCallback = (element: HTMLElement) => void;

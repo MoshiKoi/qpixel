@@ -1,16 +1,18 @@
-// function importAll(r) {
-//   r.keys().forEach(r);
-// }
+import qpixel_api from './qpixel_api.ts';
 
-// importAll(
-//   import.meta.webpackContext("../components/", {
-//     recursive: true,
-//     regExp: /\.js$/,
-//   }),
-// );
+// Rexport as a global
+// Ideally things would actually import qpixel_api, but right now they aren't written that way
+declare global {
+  var QPixel: typeof qpixel_api   
+}
+globalThis.QPixel = qpixel_api;
 
-import 'chartkick/chart.js';
-import QPixel from './qpixel_api.ts';
+// Include scripts in this folder
+const ctx = import.meta.webpackContext(".", {
+  recursive: true,
+  regExp: /(?<!\.d)\.(js|ts)$/,
+});
+ctx.keys().forEach(ctx);
 
 document.addEventListener('DOMContentLoaded', async () => {
   QPixel.DOM.addSelectorListener('click', 'a.flag-dialog-link', (ev) => {
@@ -42,8 +44,3 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 const cssVar = (name: string) => window.getComputedStyle(document.documentElement).getPropertyValue(`--${name}`).trim();
-
-// @ts-ignore Chartkick doesn't have any type information
-Chartkick.setDefaultOptions({
-  colors: Array.from(Array(5).keys()).map((idx) => cssVar(`data-${idx}`))
-});
