@@ -1,7 +1,7 @@
-const path    = require("path")
-const webpack = require("webpack")
+import path from "node:path";
+import webpack from "webpack";
 
-module.exports = {
+export default webpack.defineConfig({
   mode: "production",
   devtool: "source-map",
   entry: {
@@ -28,11 +28,11 @@ module.exports = {
     filename: "[name].js",
     sourceMapFilename: "[file].map",
     chunkFormat: "module",
-    path: path.resolve(__dirname, "app/assets/builds"),
+    path: path.resolve(import.meta.dirname, "app/assets/builds"),
   },
   plugins: [
     new webpack.optimize.LimitChunkCountPlugin({
       maxChunks: 1
     })
   ]
-}
+});

@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "typecheck": "tsc",
-    "build": "webpack --config webpack.config.js"
+    "build": "webpack --config webpack.config.mjs"
   },
   "devDependencies": {
     "@types/jquery": "^3.5.32",
