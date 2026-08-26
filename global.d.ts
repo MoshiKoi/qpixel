@@ -5,12 +5,6 @@ interface ElementOffset {
   right: number;
 }
 
-interface PostValidatorMessage {
-  type: "error" | "warning" | "error";
-  message: string;
-}
-
-type PostValidator = (postText: string) => [boolean, PostValidatorMessage[]];
 
  interface ProcessedTag {
   id: number | string
@@ -24,141 +18,12 @@ interface UserPreferences {
   global: Record<string, string | null>;
 }
 
-interface DelegatedListener {
-  event: string;
-  selector: string;
-  callback: EventListener;
-}
 
-type ClassWatcherCallback = (element: HTMLElement) => void;
 
 interface MarkdownAction {
   apply($field: JQuery<HTMLTextAreaElement | HTMLInputElement>): void
 }
 
-interface QPixelDOM {
-  // private properties
-  _delegatedListeners?: DelegatedListener[];
-  _eventListeners?: Record<string, (ev: Event) => void>;
-
-  /**
-   * Adds a delegated event listener. Use when an event listener is required that will fire for elements added to the
-   * DOM dynamically after the delegated listener is added.
-   * @param event An event name to listen for.
-   * @param selector A CSS selector representing elements on which to apply the listener.
-   * @param callback A callback function to pass to the event listener.
-   */
-  addDelegatedListener?: (event: string, selector: string, callback: EventListener) => void;
-  /**
-   * Adds an event listener to _all_ elements that currently match a selector.
-   * @param event An event name to listen for.
-   * @param selector A CSS selector representing elements on which to apply the listener.
-   * @param callback A callback function to pass to the event listener.
-   */
-  addSelectorListener?: (event: string, selector: string, callback: EventListener) => void;
-  /**
-   * Smoothly fade an element out of view, then remove it.
-   * @param element The element to fade out.
-   * @param duration A duration for the effect in milliseconds.
-   */
-  fadeOut?: (element: HTMLElement, duration: number) => void;
-  /**
-   * Formats a given {@link timestamp} with the standard format
-   * @param timestamp timestamp to format
-   */
-  formatTimestamp?: (timestamp: string | number | Date) => string;
-  /**
-   * Checks common modifier states on a given keyboard event
-   * @param event 
-   */
-  getModifierState?: (event: KeyboardEvent | MouseEvent | JQuery.KeyboardEventBase) => boolean;
-  /**
-   * Is a given event target an HTMLElement?
-   * @param target event target to check
-   */
-  isHTMLElement?: (target: EventTarget) => target is HTMLElement;
-  /**
-   * Sets visibility of an element or array of elements. Uses display: none so should work with screen readers.
-   * @param elements An element or array of elements to set visibility for.
-   * @param visible Whether or not the elements should be visible.
-   */
-  setVisible?: (elements: HTMLElement | HTMLElement[], visible: boolean) => void;
-  /**
-   * Registers a callback to run on class list change
-   * @param selector CSS selector to watch for
-   * @param callback callback to call on match
-   */
-  watchClass?: (selector: string, callback: ClassWatcherCallback) => void;
-}
-
-interface StripMarkdownOptions {
-  /**
-   * Whether to strip away the leading quote ("> content"), if any
-   * @default false
-   */
-  removeLeadingQuote?: boolean
-}
-
-interface QPixelMD {
-  /**
-   * Inserts text around a given {@link $field}'s selection
-   * @param $field field to insert text into
-   * @param start text to insert at selection start
-   * @param end text to insert at selection end, if any
-   */
-  insertIntoField?: ($field: JQuery<HTMLInputElement | HTMLTextAreaElement>, start: string, end?: string | null) => void;
-  /**
-   * Replace the selected text in an input field with a provided replacement.
-   * @param $field the field in which to replace text
-   * @param text the text with which to replace the selection
-   */
-  replaceSelection?: ($field: JQuery<HTMLInputElement | HTMLTextAreaElement>, text: string) => void;
-   /**
-    * Inserts text at a given {@link idx} in a given {@link str}
-    * @param str text to insert into
-    * @param idx position to insert at
-    * @param insert text to insert
-    */
-  stringInsert?: (str: string, idx: number, insert: string) => string;
-  /**
-   * See [strip_markdown](app/helpers/application_helper.rb) application helper
-   */
-  stripMarkdown?: (content: string, options?: StripMarkdownOptions) => string;
-}
-
-interface QPixelStorageGetOptions {
-  /**
-   * Whether the value is supposed to be parsed after retrieval
-   */
-  parse?: boolean
-}
-
-interface QPixelStorage {
-  /**
-   * Storage prefix to avoid collisions
-   */
-  readonly prefix: string
-  /**
-   * Gets a value from storage by a given key
-   * @param key key to get a value by
-   * @param options optional configuration
-   */
-  get(key: string, options: Omit<QPixelStorageGetOptions, 'parse'> & { parse: true }): object | null;
-  get(key: string, options: Omit<QPixelStorageGetOptions, 'parse'> & { parse: false }): string | null;
-  get(key: string): string | null;
-  get(key: string, options?: QPixelStorageGetOptions): unknown;
-  /**
-   * Removes a value from storage by a given key
-   * @param key key to remove a value by
-   */
-  remove(key: string): this
-  /**
-   * Saves a given value to storage under a given key
-   * @param key key to save the value under
-   * @param value value to save (objects will be serialized)
-   */
-  set(key: string, value: unknown): this
-}
 
 type QPixelKeyboardState =
   | "home"
@@ -199,7 +64,6 @@ type QPixelNotification = {
   user_id: number
 }
 
-type NotificationType = "warning" | "success" | "danger";
 
 type QPixelPopupCallback = (ev: JQuery.ClickEvent, popup: QPixelPopup) => void
 
@@ -418,16 +282,7 @@ interface QPixel {
    */
   _fetchPreferences?: () => Promise<void>;
 
-  /**
-   * FIFO-style fetch wrapper for /users/me requests
-   */
   _fetchUser?: () => Promise<QPixelUser | null>;
-
-  /**
-   * Get an object containing the current user's preferences. Loads, in order of precedence, from local variable,
-   * {@link QPixelStorage}, or Redis via AJAX.
-   * @returns user preferences or `null` on failure
-   */
   _getPreferences?: () => Promise<UserPreferences | null>;
 
   /**
@@ -468,12 +323,8 @@ interface QPixel {
    */
   addPrePostValidation?: (callback: PostValidator) => void;
 
-  /**
-   * Create a notification popup - not an inbox notification.
-   * @param type the type to apply to the popup - warning, danger, etc.
-   * @param message the message to show
-   */
-  createNotification?: (type: NotificationType, message: string) => void;
+
+  createNotification?: => void;
 
   /**
    * Get the word in a string that the given position is in, and the position within that word.
@@ -490,53 +341,28 @@ interface QPixel {
   deleteFilter?: (name: string, system?: boolean) => Promise<void>;
   filters?: () => Promise<Record<string, QPixelFilter>>;
 
-  /**
-   * Get a list of supported canonical locales for {@link Intl.NumberFormat} based on {@link QPixel.LOCALE}.
-   */
   supportedNumberLocales?: () => string[];
 
-  /**
-   * Format a given {@link value} into a human-friendly representation.
-   * @param value value (in bytes) to format
-   */
+
   numberToHumanSize?: (value: number) => string;
 
-  /**
-   * Get the absolute offset of an element.
-   * @param element the element for which to find the offset.
-   * @returns element offset information
-   */
   offset?: (element: HTMLElement) => ElementOffset;
 
-  /**
-   * Get a single user preference by name.
-   * @param name the name of the requested preference
-   * @param community is the requested preference community-local (true), or network-wide (false)?
-   * @returns the value of the requested preference
-   */
-  preference?: (name: string, community?: boolean) => Promise<string>;
+ 
+  preference?: ;
 
   setFilter?: (name: string, filter: QPixelFilter, category: string, isDefault: boolean) => Promise<void>;
 
-  /**
-   * Set a user preference by name to the value provided.
-   * @param name the name of the preference to set
-   * @param value the value to set to - must respond to toString() for {@link QPixelStorage} and Redis
-   * @param community is this preference community-local (true), or network-wide (false)?
-   */
-  setPreference?: (name: string, value: unknown, community?: boolean) => Promise<void>;
+  setPreference?:  => Promise<void>;
 
-  /**
-   * Get the user object for the current user.
-   * @returns JSON object containing user details
-   */
+
   user?: () => Promise<QPixelUser>;
 
   /**
    * Internal. Called just before a post is sent to the server to validate that it passes
    * all custom checks.
    */
-  validatePost?: (postText: string) => [boolean, PostValidatorMessage[]];
+  validatePost?: (postText: string) => ;
 
   /**
    * Wrapper around {@link fetch} to ensure credentials, CSRF token, and X-Requested-With are always sent

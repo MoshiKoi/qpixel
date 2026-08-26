@@ -2,13 +2,13 @@
   "compilerOptions": {
     "outDir": "app/assets/builds",
     "allowJs": true,
-    "checkJs": true,
+    "checkJs": false,
     "declaration": false,
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
-    "module": "es2022",
+    "module": "esnext",
     "moduleResolution": "bundler",
     "target": "ES2021",
-    "types": ["./global.d.ts", "@types/jquery", "moment", "@types/select2"]
+    "rewriteRelativeImportExtensions": true
   },
   "include": ["./app/javascript", "./public/assets/community"],
   "exclude": [

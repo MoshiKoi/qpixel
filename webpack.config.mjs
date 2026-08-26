@@ -5,13 +5,13 @@ export default webpack.defineConfig({
   mode: "production",
   devtool: "source-map",
   entry: {
-    application: "./app/javascript/application.js"
+    application: "./app/javascript/application.ts"
   },
   module: {
     rules: [
       {
-        test: /\.tsx?$/,
-        use: ["ts-loader", "glob-import-loader"],
+        test: /\.([cm]?ts|tsx)$/,
+        use: "ts-loader",
         exclude: /node_modules/,
       },
       {
@@ -23,6 +23,11 @@ export default webpack.defineConfig({
   },
   resolve: {
     extensions: [".tsx", ".ts", ".js"],
+    extensionAlias: {
+      ".js": [".js", ".ts"],
+      ".cjs": [".cjs", ".cts"],
+      ".mjs": [".mjs", ".mts"]
+    }
   },
   output: {
     filename: "[name].js",
@@ -34,5 +39,6 @@ export default webpack.defineConfig({
     new webpack.optimize.LimitChunkCountPlugin({
       maxChunks: 1
     })
-  ]
+  ],
+  externals: ["jquery", "moment", "select2"]
 });

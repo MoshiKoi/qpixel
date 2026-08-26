@@ -1,27 +1,36 @@
-import './qpixel_api.js'
-// include everything in this directory using the glob loader
-// mostly a stopgap measure to get it working
-import './**/*.js'
+// function importAll(r) {
+//   r.keys().forEach(r);
+// }
+
+// importAll(
+//   import.meta.webpackContext("../components/", {
+//     recursive: true,
+//     regExp: /\.js$/,
+//   }),
+// );
+
+import 'chartkick/chart.js';
+import QPixel from './qpixel_api.ts';
 
 document.addEventListener('DOMContentLoaded', async () => {
   QPixel.DOM.addSelectorListener('click', 'a.flag-dialog-link', (ev) => {
     ev.preventDefault();
-    const tgt = /** @type {HTMLElement} */(ev.target);
-    const flagDialog = tgt.closest('.post--body').querySelector('.js-flag-box');
+    const tgt = ev.target as HTMLElement;
+    const flagDialog = tgt.closest('.post--body')!.querySelector('.js-flag-box')!;
     flagDialog.classList.toggle('is-active');
   });
 
   QPixel.DOM.addSelectorListener('click', '.close-dialog-link', (ev) => {
     ev.preventDefault();
-    const tgt = /** @type {HTMLElement} */(ev.target);
-    const dialog = tgt.closest('.post--body').querySelector('.js-close-box');
+    const tgt = ev.target as HTMLElement;
+    const dialog = tgt.closest('.post--body')!.querySelector('.js-close-box')!;
     dialog.classList.toggle('is-active');
   });
 
   QPixel.DOM.addSelectorListener('click', '.show-all-flags-dialog-link', (ev) => {
     ev.preventDefault();
-    const tgt = /** @type {HTMLElement} */(ev.target);
-    const dialog = tgt.closest('.post--body').querySelector('.js-flags');
+    const tgt = ev.target as HTMLElement;
+    const dialog = tgt.closest('.post--body')!.querySelector('.js-flags')!;
     dialog.classList.toggle('is-active');
   });
 
@@ -32,8 +41,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 });
 
-const cssVar = (name) => window.getComputedStyle(document.documentElement).getPropertyValue(`--${name}`).trim();
+const cssVar = (name: string) => window.getComputedStyle(document.documentElement).getPropertyValue(`--${name}`).trim();
 
+// @ts-ignore Chartkick doesn't have any type information
 Chartkick.setDefaultOptions({
   colors: Array.from(Array(5).keys()).map((idx) => cssVar(`data-${idx}`))
 });

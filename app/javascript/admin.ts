@@ -1,8 +1,4 @@
-/*!
- * FILE NOTE
- * 2024-10-12
- * Not fully converted away from jQuery yet because of rails-ujs' dependency on it.
- */
+import QPixel from "./qpixel_api";
 
 document.addEventListener('DOMContentLoaded', () => {
   $('.js-destroy-user').on('ajax:success', () => {
